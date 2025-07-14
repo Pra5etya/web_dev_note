@@ -1,22 +1,38 @@
-import os
-import logging
-from logging.handlers import RotatingFileHandler
+import os, logging
+from logging.handlers import TimedRotatingFileHandler
+from datetime import datetime
 
-def setup_db_logger(log_name = "db_info", log_file = "logs/db_info.log"):
+def setup_logger(log_name="log"):
     """
     Menyiapkan logger khusus untuk informasi database.
-    Log akan disimpan ke 'logs/db_info.log', rotasi otomatis jika besar log > 1MB.
+    Setiap hari akan dibuat file log baru dengan format: logs/db_info_YYYY-MM-DD.log
     """
-    os.makedirs(os.path.dirname(log_file), exist_ok = True)  # Buat folder logs jika belum ada
+
+    os.makedirs("logs", exist_ok = True)
+
+    today_str = datetime.now().strftime("%Y-%m-%d")
+    log_file = f"logs/{log_name}_{today_str}.log"
 
     logger = logging.getLogger(log_name)
-    logger.setLevel(logging.INFO)  # Hanya log INFO ke atas (INFO, WARNING, ERROR)
+    logger.setLevel(logging.INFO)
 
     if not logger.handlers:
-        handler = RotatingFileHandler(log_file, maxBytes = 1_000_000, backupCount = 3)
+        # Ganti ke TimedRotatingFileHandler (rotasi harian)
+        handler = TimedRotatingFileHandler(
+            filename = log_file,
+            when = "midnight",           # Rotasi tiap tengah malam
+            interval = 1,                # Setiap 1 hari
+            backupCount = 30,             # Simpan 7 hari terakhir
+            encoding = 'utf-8',
+            utc = False                  # Rotasi berdasarkan waktu lokal
+        )
+
         formatter = logging.Formatter("[%(asctime)s] \t %(levelname)s: \t %(message)s")
-        
         handler.setFormatter(formatter)
+
+        # Gunakan suffix agar nama file hasil rotasi konsisten
+        handler.suffix = "%Y-%m-%d"
+
         logger.addHandler(handler)
 
     return logger

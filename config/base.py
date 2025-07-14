@@ -1,6 +1,5 @@
 import os
-from config.utils import get_database_uri
-from config.logger import setup_db_logger
+from config.data import get_database_uri
 
 class BaseConfig:
     """
@@ -12,5 +11,4 @@ class BaseConfig:
     SECRET_KEY = os.getenv("SECRET_KEY")
     DEBUG = os.getenv("DEBUG")
 
-    # Setup logger ketika konfigurasi di-load
-    setup_db_logger()
+    

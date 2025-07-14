@@ -1,16 +1,16 @@
-import os
-import shutil
-import subprocess
+import os, shutil, subprocess
 from datetime import datetime
-from config.logger import setup_db_logger
+from config.logger import setup_logger
+from config.notifikasi import send_all_notifications
 
-logger = setup_db_logger()
+logger = setup_logger()
 
 def backup_database(prefix: str):
     """
     Membackup database berdasarkan engine dari .env.
     Mendukung: SQLite, PostgreSQL, MySQL/MariaDB
     """
+
     engine = os.getenv(f"{prefix}_DB_ENGINE")
     db_name = os.getenv(f"{prefix}_DB_NAME")
     db_path = os.getenv(f"{prefix}_DB_PATH", "storage")
@@ -66,3 +66,8 @@ def backup_database(prefix: str):
 
     else:
         logger.warning(f"Backup not supported for engine: {engine}")
+
+    send_all_notifications(
+        subject = f"Backup Sukses - {prefix}", 
+        message = f"Database backup berhasil ({prefix}) pada {timestamp}"
+        )

@@ -1,5 +1,7 @@
 from app import create_app
 from config.backup import backup_database
+from config.logger import setup_logger
+from scheduler.backup_job import start_backup_scheduler
 from dotenv import load_dotenv
 
 import os, sys, time
@@ -23,11 +25,16 @@ if len(sys.argv) > 1 and sys.argv[1] in valid_envs:
 
 os.environ["FLASK_ENV"] = def_env
 
+# Setup logger ketika konfigurasi di-load
+logger = setup_logger()
+logger.info("Log Start ...")
 
-# Backup database sesuai environment dan engine
+# Backup manual saat run pertama
 prefix = def_env.upper()
 backup_database(prefix)
 
+# Jalankan scheduler
+start_backup_scheduler()
 
 # Inisialisasi aplikasi
 app = create_app()
