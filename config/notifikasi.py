@@ -1,11 +1,11 @@
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-from config.logger import setup_db_logger
+from config.logger import setup_logger
 
 import os, smtplib, requests
 
 
-logger = setup_db_logger()
+logger = setup_logger()
 
 # ========================
 # 📧 EMAIL NOTIFICATION
