@@ -87,8 +87,8 @@
 
     ```
 
-6. setelah penerapan **config**, beriuktnya menerapkan **CRUD** dimana membutuhkan **forms / tampilan untuk keluar masuk data**
-    1. buat folder **models dan forms di aplikasi utama** beserta dengan **file dan inisialisasinya**
+6. setelah penerapan **config**, beriuktnya menerapkan **database**: 
+    1. buat folder **models di aplikasi utama** beserta dengan **file dan inisialisasinya**
     2. buat terlebih dahulu file yang ada di **models**, kemudian **forms / tampilan untuk keluar masuk data** kemudian file yang ada di **forms**
     3. s
 
@@ -132,77 +132,4 @@
     ```
 
 # RAW CODE:
-```python
-# Fungsi untuk load dan setup path SQLite jika digunakan
-def get_database_uri():
-    env = os.getenv('FLASK_ENV')
 
-    if env == 'development':
-        db_path = os.getenv('DEV_DB_URI')
-        if not db_path:
-            # Fallback ke sqlite local jika tidak diset
-            db_dir = os.getenv('SQLITE_DIR', 'instance')
-            db_name = os.getenv('SQLITE_NAME', 'dev.db')
-            db_dir_abs = os.path.abspath(db_dir)
-
-            if not os.path.exists(db_dir_abs):
-                os.makedirs(db_dir_abs)
-                print(f"[INFO] Created DB directory at {db_dir_abs}")
-
-            db_file_path = os.path.join(db_dir_abs, db_name)
-            print(f"[INFO] Using SQLite DB at {db_file_path}")
-            return f"sqlite:///{db_file_path}"
-
-        return db_path
-
-    elif env == 'staging':
-        return os.getenv('STAGING_DB_URI')
-
-    elif env == 'production':
-        return os.getenv('PROD_DB_URI')
-
-    else:
-        raise ValueError(f"Unsupported FLASK_ENV: {env}")
-
-```
-
-```python
-# Fungsi untuk load dan setup path SQLite jika digunakan
-def get_database_uri():
-    env = os.getenv('FLASK_ENV')
-    print(env)
-
-    if env == 'development':
-        db_path = os.getenv('DEV_DB_URI')
-        
-        if not db_path:
-            # Fallback ke sqlite local jika tidak diset
-            db_dir = os.getenv('DEV_DB_PATH')
-            print(db_dir)
-
-            db_name = os.getenv('DEV_DB_NAME')
-            print(db_name)
-
-            db_dir_abs = os.path.abspath(db_dir)
-            print(db_dir_abs)
-
-            if not os.path.exists(db_dir_abs):
-                os.makedirs(db_dir_abs)
-                print(f"[INFO] Created DB directory at {db_dir_abs}")
-
-            db_file_path = os.path.join(db_dir_abs, db_name)
-            print(f"[INFO] Using SQLite DB at {db_file_path}")
-
-            return f"sqlite:///{db_file_path}"
-
-        return db_path
-
-    elif env == 'staging':
-        return os.getenv('STAGING_DB_URI')
-
-    elif env == 'production':
-        return os.getenv('PROD_DB_URI')
-
-    else:
-        raise ValueError(f"Unsupported FLASK_ENV: {env}")
-```

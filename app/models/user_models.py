@@ -14,4 +14,3 @@ class User(db.Model):  # Model User
 
     def __repr__(self):
         return f"<User {self.username}>"  # Untuk debug di console
-

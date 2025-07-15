@@ -39,8 +39,13 @@ def create_app():
     register_routes(core)
 
     # 3. __init__ models sections
+    from app.models import db
+    db.init_app(core)
 
-
-    # 
+    # 4. pembuatan table 
+    with core.app_context():
+        from app import models # mengambil semua data yang ada pada model pada var __all__
+        db.create_all()
+        print("[INFO] All models initialized.")
 
     return core

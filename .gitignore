@@ -12,3 +12,5 @@ config/__pycache__
 logs
 
 scheduler/__pycache__
+
+storage

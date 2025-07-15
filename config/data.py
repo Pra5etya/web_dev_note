@@ -11,11 +11,11 @@ def resolve_database_uri(prefix: str) -> str:
     """
     # 
     engine = os.getenv(f"{prefix}_DB_ENGINE")
-    driver = os.getenv(f"{prefix}_DB_DRIVER")
-    username = os.getenv(f"{prefix}_DB_USERNAME")
-    password = os.getenv(f"{prefix}_DB_PASSWORD")
-    host = os.getenv(f"{prefix}_DB_HOST")
-    port = os.getenv(f"{prefix}_DB_PORT")
+    driver = os.getenv(f"{prefix}_DB_DRIVER", "").strip() or None
+    username = os.getenv(f"{prefix}_DB_USERNAME", "").strip() or None
+    password = os.getenv(f"{prefix}_DB_PASSWORD", "").strip() or None
+    host = os.getenv(f"{prefix}_DB_HOST", "").strip() or None
+    port = os.getenv(f"{prefix}_DB_PORT", "").strip() or None
     db_name = os.getenv(f"{prefix}_DB_NAME")
     db_path = os.getenv(f"{prefix}_DB_PATH")
 
